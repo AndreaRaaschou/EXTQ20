@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jan 31 13:44:28 2026
+Created on Fri Feb  6 10:50:42 2026
 @author: andrearaaschou
 """
 import numpy as np
-import functions as f
+import functions_final as f
 
 # Main variables
 pop_size = 1000
@@ -26,25 +26,10 @@ meanfitness = np.zeros(max_generations)
 
 # main loop over all of our functions
 for generation in range(max_generations):
-    #print(pop["chr_size"])
-    #print(pop["genes"])
-    #print(pop["fitness"])
-    #print("reproduce")
     pop = f.reproduce(pop, num_breed)
-    #print(pop["genes"])
-    #print(pop["fitness"])
-    #print("mutate")
     pop = f.mutate(pop, mutation_free, mutation_rate)
-    #print(pop["genes"])
-    #print(pop["fitness"])
-    #print("fitness")
     pop = f.evaluate_fitness(pop)
-    #print(pop["genes"])
-    #print(pop["fitness"])
-    #print("sort")
     pop = f.sort_pop(pop)
-    #print(pop["genes"])
-    #print(pop["fitness"])
     
     # save statisitcs
     topfitness[generation] = pop["fitness"][0]
@@ -58,7 +43,4 @@ print(f"Genes of the best individual: {np.round(pop["genes"][0, :pop["chr_size"]
 print(f"Fitness of the best individual: {np.round(pop["fitness"][0], 2)}")
 print(f.gene_to_expression(pop["genes"][0, :], pop["chr_size"][0]))
 
-
-#genes = pop["genes"]
-#chr_size = pop["chr_size"]
 
