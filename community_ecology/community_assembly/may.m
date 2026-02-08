@@ -22,9 +22,11 @@ close all
 
 %Parameters
 %Interaction strength standard deviation
-s=0.2;
+%s=0.2;
 %Connectance
 c=0.5;
+%Community size
+n=200;
 
 %Number of repetitions
 num_repetitions=200;
@@ -32,14 +34,14 @@ num_repetitions=200;
 %The different values for the variable we change
 %is stored in a vector which is num_repetition long 
 
-n_vector=1:num_repetitions;
-
+%n_vector=1:num_repetitions;
+s_vector=linspace(0,0.5,num_repetitions);
 
 for r=1:num_repetitions
     
     %Pic a value for
-    %s=s_vector(r);
-    n=n_vector(r);
+    s=s_vector(r);
+    %n=n_vector(r);
 
     
     %Create random matrix
@@ -62,3 +64,19 @@ end
 plot(snc,lambda_max_tot,'k.')
 xlabel('s\surdnc')
 ylabel('dominant eigenvalue')
+
+
+% my function
+function J = random_matrix(s,n,c)
+J = - eye(n); % nxn matrix with -1 along diagonal and zeros elsewhere
+
+for i=1:(n-1)
+    for j=(i+1):n
+        rand_num = rand; % random scalar from uniform distribution (0,1)
+        if rand_num > 1-c % if it is below 1-c - leave the 0
+           J(i, j) = s * randn; % generate random number from 
+           J(j, i) = s * randn; % normal distribution mu = 0, ds = s
+        end
+    end
+end
+end % will return J (randomly generated community matrix)
