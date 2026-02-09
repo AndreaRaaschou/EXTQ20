@@ -2,6 +2,7 @@
 """
 Created on Fri Feb  6 10:50:42 2026
 @author: andrearaaschou
+Exercise 3
 """
 import numpy as np
 import functions_final as f
@@ -41,6 +42,7 @@ f.plot_comparison(pop)
 
 print(f"Genes of the best individual: {np.round(pop["genes"][0, :pop["chr_size"][0]], 2)}")
 print(f"Fitness of the best individual: {np.round(pop["fitness"][0], 2)}")
+print("Polynomial of the best individual")
 print(f.gene_to_expression(pop["genes"][0, :], pop["chr_size"][0]))
 
 

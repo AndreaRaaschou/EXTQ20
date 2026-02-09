@@ -2,19 +2,20 @@
 """
 Created on Fri Feb  6 10:51:54 2026
 @author: andrearaaschou
+Exercise 3
 """
 import numpy as np
 import  matplotlib.pyplot as plt
 import sys
 
 def target_pol_1(x):
-    return -7.5*x**3 + 2*x**2 + 5*x + 2
+    return -7.5*x**11 + 2*x**5 + 5*x + 9
 
 def target_pol_2(x):
-    return 7.5*x**3 - 2*x**2 - 5*x + 2
+    return x**2 
 
 def target_pol_3(x):
-    return -2.5*x**3 * 3*x**2 * (-5.5)*x * (- 2.2)
+    return -2.5*x**11 * 3*x**4 * (-5.5)*x * (- 8)
 
 # Calcualte value of the polynomial in the given chromosome
 def approx_pol(x, genes, chr_size):

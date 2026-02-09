@@ -2,6 +2,7 @@
 """
 Created on Sat Jan 31 13:02:29 2026
 @author: andrearaaschou
+Exercise 2
 """
 import numpy as np
 import  matplotlib.pyplot as plt
@@ -45,7 +46,7 @@ def create_pop(pop_size, gene_number):
 # Evaluate fitness for each individual in pop
 def evaluate_fitness(pop):
     x = np.linspace(-1, 1, 21) # x-values (-1,1)
-    O = target_pol_2(x) # observed values
+    O = target_pol_3(x) # observed values
     
     for ind in range(pop["size"]): # for each individual in pop
         Y = approx_pol(x, pop["genes"][ind])  # send both x and the gene for current individual 
@@ -96,7 +97,7 @@ def mutate(pop, mutation_free, mutation_rate):
 # Make plot with comparison between observed values and predicted values (best individual)
 def plot_comparison(pop):
     x = np.linspace(-1, 1, 21)
-    O = target_pol_2(x)
+    O = target_pol_3(x)
     Y = approx_pol(x, pop["genes"][0]) 
     plt.plot(x, O, 's', label="Observed values", color="blue")
     plt.plot(x, Y, label="Predicted values", color="red")

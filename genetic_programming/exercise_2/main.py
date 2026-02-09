@@ -2,12 +2,13 @@
 """
 Created on Sat Jan 31 13:03:08 2026
 @author: andrearaaschou
+Exercise 2
 """
 import numpy as np
 import functions as f
 
 # Main variables
-pop_size = 50
+pop_size = 200
 gene_number = 7
 max_generations = 100
 num_breed = 20
@@ -40,5 +41,4 @@ f.plot_comparison(pop)
 
 print(f"Genes of the best individual: {np.round(pop["genes"][0, :], 2)}")
 print(f"Fitness of the best individual: {np.round(pop["fitness"][0], 2)}")
-
 
