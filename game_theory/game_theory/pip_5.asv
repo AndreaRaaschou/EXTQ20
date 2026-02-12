@@ -1,0 +1,44 @@
+% 5b
+% Plot the Pairwise Invasibility Plot (PIP) of the
+% Lotka-Volterra predator-prey model with logistic growth
+% both a and mu are dependenr on x
+
+clear; close all; clc;
+
+r = 1;       % intrinsic growth rate
+mu0 = 0.2;   % optimal consumer mortality (when x = 1)
+eps = 0.1;   % conversion coefficient
+a0 = 10;     % maximum attack rate (when x = 0)
+k = 5;       % constant?
+m = 0.1;     % dependence on x (when x = 0, mu = mu0)
+
+% use meshgrid to create a 2D matrix with (columns, rows)
+x = linspace(-1, 1, 200);
+y = linspace(-1, 1, 200); 
+[X, Y] = meshgrid(x, y); % represents (x, x')
+
+% calculate fitness for invading x' (Y)
+Z = mu(X, mu0, m).*(a(Y, a0, k)./a(X, a0, k)) - mu(Y, mu0, m);
+
+% plot
+figure
+pcolor(X, Y,Z)
+caxis([-0.1 0.1])
+shading interp
+colorbar
+hold on
+contour(X, Y, Z, [0, 0], 'k')
+xlabel('Resident x', 'FontSize', 16)
+ylabel('Invading x''', 'FontSize', 16)
+%xline(0.47)
+hold off
+
+% calculate attack rate
+function [attack_rate] = a(x, a0, k)
+attack_rate = a0 - 1/2 * k*x.^2;
+end
+
+% calculate consumer mortality
+function [mortality] = mu(x, mu0, m)
+mortality = mu0 + (1/2) * m*(x-1).^2;
+end

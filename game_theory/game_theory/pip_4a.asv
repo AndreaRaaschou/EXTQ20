@@ -1,0 +1,23 @@
+% 4a
+% Plot the Pairwise Invasibility Plot (PIP) of the
+% Lotka-Volterra predator-prey model with logistic growth
+
+r = 1;       % intrinsic growth rate
+mu = 0.2;    % consumer mortality
+eps = 0.1;   % conversion coefficient
+a0 = 10;     % ___ attack rate
+k = 10;      % constans?
+
+% make a function that calculates the invasion fitness (f) for each (x', x)
+
+
+% use meshgrid to create a 2D matrix with (columns, rows)
+x = linspace(-1, 1, 10);
+y = linspace(-1, 1, 10); 
+[X, Y] = meshgrid(x, y)
+
+mu*(a(Y, a0, k)/a(x, a0, k) - 1)
+
+function [f] = a(x, a0, k)
+f = a0 - 1/2 * k*x.^2
+end
