@@ -141,7 +141,7 @@ while t_evo < 5000
     % Compute fitness landscapes (N_fitland used later for saving/plotting)
     simsteps=3;
     count=1;
-    for j=mut_range
+    for j=mut_range                                  % build the fitness landscape at the current resident stage
         mutant_trait=j;
 
         mut_type_flag=1;
@@ -156,7 +156,7 @@ while t_evo < 5000
     end
 
     if t_evo==0
-        prey_fitland_data{1,1}=t_evo;
+        prey_fitland_data{1,1}=t_evo;                % setup prey fitland data (eco_time, N_fitland)
         prey_fitland_data{1,2}=N_fitland;
 
         pred_fitland_data{1,1}=t_evo;
@@ -164,32 +164,33 @@ while t_evo < 5000
     end
 
     % Mutation selection rates
-    w=abun_vec.*mut_vec;
+    w=abun_vec.*mut_vec;         % mutation probability (abundance of each population * mutation rate)
     w_tot=sum(w);
 
-    mut_sp=find(rand<cumsum(w/w_tot),1,'first');
+    mut_sp=find(rand<cumsum(w/w_tot),1,'first');  % find species to mutate, randomized but higher probability of choosing species that are more abundant
     mut_fit=[];
 
    % if growth_death_vec(mut_sp)>0 % consumer mutation
 
-        mutant_trait=trait_vec(mut_sp) + sigma_mut_N*randn;
+        mutant_trait=trait_vec(mut_sp) + sigma_mut_N*randn;  % generate a new mutant trait - add small gaussian noice to current trait
         mut_type_flag=1;
 
         t_evo=t_evo+1;
 
-        simsteps=3;
+        simsteps=3;  % evaluate mutant invasion fitness (fitcompflag = 1):
         [t,y,A,mut_fit, K_A, alpha, a] = mutfit_and_popequi_func(parameters, mutant_trait, mut_type_flag, simsteps, 1);
 
+        % generate new mutant population/trait if mutant fitness > 0
         if mut_fit>0
 
             disp('consumer mutated with positive fitness')
 
-            V_tmp=V; V_tmp(mut_sp)=mutant_trait;
-            Z_tmp=Z;
+            V_tmp=V;                        % save current species traits in V_temp
+            V_tmp(mut_sp)=mutant_trait;     % replace trait of the mutated species with new species
+            Z_tmp=Z;                        % leave predator unchanged - not used
+            parameters.V=V_tmp;             % update the system parameters - automatically updates K_A, A, alpha, a
 
-            parameters.V=V_tmp;
-
-            simsteps=t_end/dt;
+            simsteps=t_end/dt; % compute full ecological equilibrium (fitcompflag = 0):
             [t,y,A,mut_fit, K_A, alpha, a] = mutfit_and_popequi_func(parameters, mutant_trait, mut_type_flag, simsteps, 0);
 
             abun_vec_tmp=y(end,:)';
