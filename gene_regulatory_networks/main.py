@@ -2,75 +2,50 @@
 """
 Created on Tue Mar 24 09:42:13 2026
 @author: andrearaaschou
+
+Implement the deterministic and the stochastic (Gillespie algorithm) model for the bistable switch.
+Conduct simulations for both models with initial conditions specified on slides (21, 22, 23) 
+and with parameters specified in Gardner et al. 2000 Figure 5a (Reproduce the results shown in slides 21, 22, 23.)
 """
 import numpy as np
 import  matplotlib.pyplot as plt
-
-# Implement the deterministic and the stochastic (Gillespie algorithm) model for the bistable switch.
-# Conduct simulations for both models with initial conditions specified on slides (21, 22, 23) 
-# and with parameters specified in Gardner et al. 2000 Figure 5a (Reproduce the results shown in slides 21, 22, 23.)
-
-
-
-# Initializing stuff i need but with random numbers - look up what they should be
-a0 = 2 
-a1 = 3
-a2 = 4
-a3 = 1
-a4 = 4
-
-ai = (a1, a2, a3, a4)
-
-t0 = 4
-x0 = 3
+import gillespie_simulation as gs
 
 # Parameters from Gardner et al
-alpha1 = 156.25 
-alpha2 = 15.6
+alpha1 = 156.25    # effective rate of synthesis of repressor 1
+alpha2 = 15.6      # effective rate of synthesis of repressor 2
+beta = 2.5         # cooperativity of repression of promoter 2
+gamma = 1          # cooperativity of repression of promoter 1
+  
+# more parameters from Gardner et al, not sure where to use these - will probably remove?
+#eta = 2.0015
+#K = 2.9618 * 10**(-5)
 
-# more parameters from Gardner et al, not sure where to use these
-beta = 2.5
-gamma = 1
-eta = 2.0015
-K = 2.9618 * 10**(-5)
+# Initial conditions to test and put in report:
+    # U(0) = 6, V(0) = 1
+    # U(0) = 1, V(0) = 6
+t0 = 0                  # starting time of the simulation
+x0 = np.array((6, 1))   # initial number of molecules (u, v)
 
-# ----------------- Start of program ---------------------
-# Initialize t and X
-t = t0
-x = x0
-
-# 1. Evaluate a_mu (a1, a2, a3, a4) and their sum a0 given the system is in state x at time t
-
-# 2. Generate tao and mu using equation 8
-# generate r1 and r2
-r1, r2 = np.random.uniform(0, 1, 2)
-print(f"r1: {r1}")
-print(f"r2: {r2}")
-
-tao = 1/a0 * np.log(1/r1)
+def gillespie_model(t, x, alpha1, alpha2, beta, gamma):
+    u, v = x
+    dudt = alpha1 / (1 + v**beta) - u 
+    dvdt = alpha2 / (1 + u**gamma) - v
+    return (dudt, dvdt)
 
 
-#mu = np.min(ai[ai > r2 * a0]) # dont do this instead do
-place = np.floor(r2 * a0) # round down to nearest integer
-acumulative_conc = 0
-for i in ai: # loop through ai
-    acumulative_conc += ai[i] # add the current count
-    if acumulative_conc >= place: # break the loop when the correct ai is found
-        print(f'position is {i}')
-        break
-    
-# take this element in the list or something similar
 
-# 3. Update the system (t and x)
+t, x = gs.stochastic_simulation(t0, x0, alpha1, alpha2, beta, gamma, num_iterations = 200)
 
-# 4. Record x, t. return to step 1 or else end simulation
+fig, (ax1, ax2) = plt.subplots(1,2)
+ax2.plot(t, x[:, 0], label = 'u')
+ax2.plot(t, x[:, 1], label = 'v')
+ax2.set_title('plot title', fontsize=12)
+ax2.set_xlabel('Time', fontsize=10)
+ax2.set_ylabel('number of molecules', fontsize=10)
+ax2.legend()
 
 
-# Results to reproduce:
-    # one graph with the deterministic cell programming model 
-    # one graph with the stochastic (Gillespie) model
-    # time on x-axis, expression on y-axis
-    # two different types of proteins expressed
 
 
 
