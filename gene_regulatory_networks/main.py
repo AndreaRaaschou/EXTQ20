@@ -89,7 +89,7 @@ def make_plots(t, x, sol):
     return (fig, ax1, ax2)
 
 def run_simulations(t0, x0):
-    # Parameters from Gardner et al
+    # Parameters from Gardner et al (2000)
     alpha1 = 156.25    # effective rate of synthesis of repressor 1
     alpha2 = 15.6      # effective rate of synthesis of repressor 2
     beta = 2.5         # cooperativity of repression of promoter 2
